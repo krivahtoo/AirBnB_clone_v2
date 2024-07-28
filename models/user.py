@@ -6,6 +6,7 @@ from models.review import Review
 from models.place import Place
 from sqlalchemy.orm import relationship
 
+
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
