@@ -51,21 +51,14 @@ class DBStorage:
                 "Place": Place,
                 "Amenity": Amenity
                 }
-        dictionary = {}
-        if cls is None:
-            for a_class in all_class:
-                all_instance = self.__session.query(all_class[a_class]).all()
-                for instance in all_instance:
-                    key = f"{type(instance).__name__}.{instance.id}"
-                    instance.__dict__ = instance.to_dict()
-                    dictionary.update({key: instance})
-        else:
-            all_instance = self.__session.query(all_class[cls]).all()
-            for instance in all_instance:
-                key = f"{type(instance).__name__}.{instance.id}"
-                instance.__dict__ = instance.to_dict()
-            dictionary.update({key: instance})
-        return dictionary
+        new_dict = {}
+        for clss in all_class:
+            if cls is None or cls is all_class[clss] or cls is clss:
+                objs = self.__session.query(all_class[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """ This Method adds the object to the current database session """
